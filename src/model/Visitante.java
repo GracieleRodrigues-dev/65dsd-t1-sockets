@@ -13,12 +13,29 @@ public class Visitante extends Pessoa {
     }
 
     // Getters e Setters
-    public int getCodigoAcesso() { return codigoAcesso; }
-    public String getEmail() { return email; }
-    public boolean isAcompanhante() { return acompanhante; }
+    public int getCodigoAcesso() {
+        return codigoAcesso;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public boolean isAcompanhante() {
+        return acompanhante;
+    }
 
     @Override
     public String toString() {
         return super.toString() + ";" + codigoAcesso + ";" + email + ";" + acompanhante;
+    }
+
+    public void setCodigoAcesso(int codigoAcesso) {
+        this.codigoAcesso = codigoAcesso;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setAcompanhante(boolean acompanhante) {
+        this.acompanhante = acompanhante;
     }
 }

@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Clube {
+    private static  int proximoId = 1;
+    private int id;
     private String nome;
     private int capacidade;
     private List<Pessoa> pessoas;
 
     public Clube(String nome, int capacidade) {
+        this.id = proximoId++;
         this.nome = nome;
         this.capacidade = capacidade;
         this.pessoas = new ArrayList<>();
@@ -43,5 +46,21 @@ public class Clube {
 
     public List<Pessoa> listarPessoas() {
         return pessoas;
+    }
+
+    @Override
+    public String toString() {
+        return nome + ";" + capacidade;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+    public void setCapacidade(int capacidade) {
+        this.capacidade = capacidade;
+    }
+
+    public int getId() {
+        return id;
     }
 }

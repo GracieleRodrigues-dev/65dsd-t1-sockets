@@ -8,7 +8,10 @@ import java.net.*;
 import java.util.*;
 
 public class Servidor {
-    private static Clube clube = new Clube("Clube dos Devs", 100);
+    private static List<Pessoa> pessoas = new ArrayList<>();
+    private static List<Socio> socios = new ArrayList<>();
+    private static List<Visitante> visitantes = new ArrayList<>();
+    private static List<Clube> clubes = new ArrayList<>();
 
     public static void main(String[] args) {
         try (ServerSocket serverSocket = new ServerSocket(8080)) {
@@ -41,47 +44,78 @@ public class Servidor {
     private static String processarMensagem(String mensagem) {
         String[] partes = mensagem.split(";");
         String operacao = partes[0];
+        String classe = partes[1];
 
-        switch (operacao) {
-            case "INSERT_PESSOA":
-                return inserirPessoa(partes[1], partes[2], partes[3]);
-            case "INSERT_SOCIO":
-                return inserirSocio(partes[1], partes[2], partes[3], Integer.parseInt(partes[4]), Boolean.parseBoolean(partes[5]));
-            case "INSERT_VISITANTE":
-                return inserirVisitante(partes[1], partes[2], partes[3], Integer.parseInt(partes[4]), partes[5], Boolean.parseBoolean(partes[6]));
-            case "UPDATE_PESSOA":
-                return atualizarPessoa(partes[1], partes[2], partes[3]);
-            case "GET_PESSOA":
-                return obterPessoa(partes[1]);
-            case "DELETE_PESSOA":
-                return removerPessoa(partes[1]);
-            case "LIST_PESSOAS":
-                return listarPessoas();
-            default:
-                return "Operação inválida";
+        try {
+            switch (operacao + ";" + classe) {
+                // Operações para Pessoa
+                case "INSERT;PESSOA":
+                    return inserirPessoa(partes[2], partes[3], partes[4]);
+                case "UPDATE;PESSOA":
+                    return atualizarPessoa(partes[2], partes[3], partes[4]);
+                case "GET;PESSOA":
+                    return obterPessoa(partes[2]);
+                case "DELETE;PESSOA":
+                    return removerPessoa(partes[2]);
+                case "LIST;PESSOA":
+                    return listarPessoas();
+
+                // Operações para Socio
+                case "INSERT;SOCIO":
+                    return inserirSocio(partes[2], partes[3], partes[4], Integer.parseInt(partes[5]), Boolean.parseBoolean(partes[6]));
+                case "UPDATE;SOCIO":
+                    return atualizarSocio(partes[2], partes[3], partes[4], Integer.parseInt(partes[5]), Boolean.parseBoolean(partes[6]));
+                case "GET;SOCIO":
+                    return obterSocio(partes[2]);
+                case "DELETE;SOCIO":
+                    return removerSocio(partes[2]);
+                case "LIST;SOCIO":
+                    return listarSocios();
+
+                // Operações para Visitante
+                case "INSERT;VISITANTE":
+                    return inserirVisitante(partes[2], partes[3], partes[4], Integer.parseInt(partes[5]), partes[6], Boolean.parseBoolean(partes[7]));
+                case "UPDATE;VISITANTE":
+                    return atualizarVisitante(partes[2], partes[3], partes[4], Integer.parseInt(partes[5]), partes[6], Boolean.parseBoolean(partes[7]));
+                case "GET;VISITANTE":
+                    return obterVisitante(partes[2]);
+                case "DELETE;VISITANTE":
+                    return removerVisitante(partes[2]);
+                case "LIST;VISITANTE":
+                    return listarVisitantes();
+
+                // Operações para Clube
+                case "INSERT;CLUBE":
+                    return inserirClube(partes[2], Integer.parseInt(partes[3]));
+                case "UPDATE;CLUBE":
+                    return atualizarClube(Integer.parseInt(partes[2]), partes[3],Integer.parseInt(partes[4]));
+                case "GET;CLUBE":
+                    return obterClube(Integer.parseInt(partes[2]));
+                case "DELETE;CLUBE":
+                    return removerClube(Integer.parseInt(partes[2]));
+                case "LIST;CLUBE":
+                    return listarClubes();
+
+                default:
+                    return "Operação inválida";
+            }
+        } catch (Exception e) {
+            return "Erro: " + e.getMessage();
         }
     }
 
+    // Métodos para Pessoa
     private static String inserirPessoa(String cpf, String nome, String endereco) {
+        if (buscarPessoaPorCpf(cpf) != null) {
+            return "Erro: Pessoa com este CPF já existe";
+        }
         Pessoa pessoa = new Pessoa(cpf, nome, endereco);
-        clube.adicionarPessoa(pessoa);
+        pessoas.add(pessoa);
         return "Pessoa inserida com sucesso";
     }
 
-    private static String inserirSocio(String cpf, String nome, String endereco, int matricula, boolean ativo) {
-        Socio socio = new Socio(cpf, nome, endereco, matricula, ativo);
-        clube.adicionarPessoa(socio);
-        return "Sócio inserido com sucesso";
-    }
-
-    private static String inserirVisitante(String cpf, String nome, String endereco, int codigoAcesso, String email, boolean acompanhante) {
-        Visitante visitante = new Visitante(cpf, nome, endereco, codigoAcesso, email, acompanhante);
-        clube.adicionarPessoa(visitante);
-        return "Visitante inserido com sucesso";
-    }
-
     private static String atualizarPessoa(String cpf, String nome, String endereco) {
-        Pessoa pessoa = clube.buscarPessoa(cpf);
+        Pessoa pessoa = buscarPessoaPorCpf(cpf);
         if (pessoa != null) {
             pessoa.setNome(nome);
             pessoa.setEndereco(endereco);
@@ -91,22 +125,20 @@ public class Servidor {
     }
 
     private static String obterPessoa(String cpf) {
-        Pessoa pessoa = clube.buscarPessoa(cpf);
-        if (pessoa != null) {
-            return pessoa.toString();
-        }
-        return "Pessoa não encontrada";
+        Pessoa pessoa = buscarPessoaPorCpf(cpf);
+        return pessoa != null ? pessoa.toString() : "Pessoa não encontrada";
     }
 
     private static String removerPessoa(String cpf) {
-        if (clube.removerPessoa(cpf)) {
+        Pessoa pessoa = buscarPessoaPorCpf(cpf);
+        if (pessoa != null) {
+            pessoas.remove(pessoa);
             return "Pessoa removida com sucesso";
         }
         return "Pessoa não encontrada";
     }
 
     private static String listarPessoas() {
-        List<Pessoa> pessoas = clube.listarPessoas();
         if (pessoas.isEmpty()) {
             return "0";
         }
@@ -116,5 +148,182 @@ public class Servidor {
             sb.append(pessoa.toString()).append("\n");
         }
         return sb.toString();
+    }
+
+    // Métodos para Socio
+    private static String inserirSocio(String cpf, String nome, String endereco, int matricula, boolean ativo) {
+        if (buscarSocioPorCpf(cpf) != null) {
+            return "Erro: Sócio com este CPF já existe";
+        }
+        Socio socio = new Socio(cpf, nome, endereco, matricula, ativo);
+        socios.add(socio);
+        return "Sócio inserido com sucesso";
+    }
+
+    private static String atualizarSocio(String cpf, String nome, String endereco, int matricula, boolean ativo) {
+        Socio socio = buscarSocioPorCpf(cpf);
+        if (socio != null) {
+            socio.setNome(nome);
+            socio.setEndereco(endereco);
+            socio.setMatricula(matricula);
+            socio.setAtivo(ativo);
+            return "Sócio atualizado com sucesso";
+        }
+        return "Sócio não encontrado";
+    }
+
+    private static String obterSocio(String cpf) {
+        Socio socio = buscarSocioPorCpf(cpf);
+        return socio != null ? socio.toString() : "Sócio não encontrado";
+    }
+
+    private static String removerSocio(String cpf) {
+        Socio socio = buscarSocioPorCpf(cpf);
+        if (socio != null) {
+            socios.remove(socio);
+            return "Sócio removido com sucesso";
+        }
+        return "Sócio não encontrado";
+    }
+
+    private static String listarSocios() {
+        if (socios.isEmpty()) {
+            return "0";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(socios.size()).append("\n");
+        for (Socio socio : socios) {
+            sb.append(socio.toString()).append("\n");
+        }
+        return sb.toString();
+    }
+
+    // Métodos para Visitante
+    private static String inserirVisitante(String cpf, String nome, String endereco, int codigoAcesso, String email, boolean acompanhante) {
+        if (buscarVisitantePorCpf(cpf) != null) {
+            return "Erro: Visitante com este CPF já existe";
+        }
+        Visitante visitante = new Visitante(cpf, nome, endereco, codigoAcesso, email, acompanhante);
+        visitantes.add(visitante);
+        return "Visitante inserido com sucesso";
+    }
+
+    private static String atualizarVisitante(String cpf, String nome, String endereco, int codigoAcesso, String email, boolean acompanhante) {
+        Visitante visitante = buscarVisitantePorCpf(cpf);
+        if (visitante != null) {
+            visitante.setNome(nome);
+            visitante.setEndereco(endereco);
+            visitante.setCodigoAcesso(codigoAcesso);
+            visitante.setEmail(email);
+            visitante.setAcompanhante(acompanhante);
+            return "Visitante atualizado com sucesso";
+        }
+        return "Visitante não encontrado";
+    }
+
+    private static String obterVisitante(String cpf) {
+        Visitante visitante = buscarVisitantePorCpf(cpf);
+        return visitante != null ? visitante.toString() : "Visitante não encontrado";
+    }
+
+    private static String removerVisitante(String cpf) {
+        Visitante visitante = buscarVisitantePorCpf(cpf);
+        if (visitante != null) {
+            visitantes.remove(visitante);
+            return "Visitante removido com sucesso";
+        }
+        return "Visitante não encontrado";
+    }
+
+    private static String listarVisitantes() {
+        if (visitantes.isEmpty()) {
+            return "0";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(visitantes.size()).append("\n");
+        for (Visitante visitante : visitantes) {
+            sb.append(visitante.toString()).append("\n");
+        }
+        return sb.toString();
+    }
+
+    // Métodos para Clube
+    private static String inserirClube(String nome, int capacidade) {
+        Clube clube = new Clube(nome,capacidade);
+        clubes.add(clube);
+        return "Clube inserido com sucesso";
+    }
+
+    private static String atualizarClube(int id, String nome, int capacidade) {
+        Clube clube = buscarClubePorId(id);
+        if (clube != null) {
+            clube.setNome(nome);
+            clube.setCapacidade(capacidade);
+            return "Clube atualizado com sucesso";
+        }
+        return "Clube não encontrado";
+    }
+
+    private static String obterClube(int id) {
+        Clube clube = buscarClubePorId(id);
+        return clube != null ? clube.toString() : "Clube não encontrado";
+    }
+
+    private static String removerClube(int id) {
+        Clube clube = buscarClubePorId(id);
+        if (clube != null) {
+            clubes.remove(clube);
+            return "Clube removido com sucesso";
+        }
+        return "Clube não encontrado";
+    }
+
+    private static String listarClubes() {
+        if (clubes.isEmpty()) {
+            return "0";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(clubes.size()).append("\n");
+        for (Clube clube : clubes) {
+            sb.append(clube.toString()).append("\n");
+        }
+        return sb.toString();
+    }
+
+    // Métodos auxiliares de busca
+    private static Pessoa buscarPessoaPorCpf(String cpf) {
+        for (Pessoa pessoa : pessoas) {
+            if (pessoa.getCpf().equals(cpf)) {
+                return pessoa;
+            }
+        }
+        return null;
+    }
+
+    private static Socio buscarSocioPorCpf(String cpf) {
+        for (Socio socio : socios) {
+            if (socio.getCpf().equals(cpf)) {
+                return socio;
+            }
+        }
+        return null;
+    }
+
+    private static Visitante buscarVisitantePorCpf(String cpf) {
+        for (Visitante visitante : visitantes) {
+            if (visitante.getCpf().equals(cpf)) {
+                return visitante;
+            }
+        }
+        return null;
+    }
+
+    private static Clube buscarClubePorId(int id) {
+        for (Clube clube : clubes) {
+            if (clube.getId() == id) {
+                return clube;
+            }
+        }
+        return null;
     }
 }

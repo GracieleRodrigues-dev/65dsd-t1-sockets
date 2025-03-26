@@ -11,12 +11,22 @@ public class Socio extends Pessoa {
     }
 
     // Getters e Setters
-    public int getMatricula() { return matricula; }
-    public boolean isAtivo() { return ativo; }
-    public void setAtivo(boolean ativo) { this.ativo = ativo; }
+    public int getMatricula() {
+        return matricula;
+    }
+    public boolean isAtivo() {
+        return ativo;
+    }
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
 
     @Override
     public String toString() {
         return super.toString() + ";" + matricula + ";" + ativo;
+    }
+
+    public void setMatricula(int matricula) {
+        this.matricula = matricula;
     }
 }
