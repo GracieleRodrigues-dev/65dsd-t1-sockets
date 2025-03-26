@@ -138,20 +138,20 @@ public class Cliente {
     }
 
     private static String coletarDadosClube(String operacao) {
-        System.out.print("ID do Clube: ");
-        String id = scanner.nextLine();
 
         if (operacao.equals("GET") || operacao.equals("DELETE")) {
+            System.out.print("ID do Clube: ");
+            String id = scanner.nextLine();
             return id;
         }
 
         System.out.print("Nome: ");
         String nome = scanner.nextLine();
 
-        System.out.print("Endereço: ");
-        String endereco = scanner.nextLine();
+        System.out.print("Capacidade: ");
+        String capacidade = scanner.nextLine();
 
-        return id + ";" + nome + ";" + endereco;
+        return nome + ";" + capacidade;
     }
 
     private static void enviarMensagem(String mensagem) {
