@@ -1,15 +1,19 @@
 
-import java.io.*;
-import java.net.*;
 import java.util.Scanner;
+
+import controller.ClienteControlador;
+import utils.Formulario;
 
 public class Cliente {
 
 	private static Scanner scanner = new Scanner(System.in);
+	Formulario formulario = new Formulario();
 
 	public static void main(String[] args) {
+		ClienteControlador clienteControlador = new ClienteControlador();
+
 		while (true) {
-			exibirMenuPrincipal();
+			clienteControlador.exibirMenuPrincipal();
 			int opcao = scanner.nextInt();
 			scanner.nextLine();
 
@@ -30,163 +34,19 @@ public class Cliente {
 				continue;
 			}
 
-			String classe = selecionarClasse();
+			String classe = clienteControlador.selecionarClasse();
 			if (classe == null) {
 				continue;
 			}
 
-			String dados = coletarDados(operacao, classe);
+			String dados = clienteControlador.coletarDados(operacao, classe);
 			if (dados == null) {
 				continue;
 			}
 
-			enviarMensagem(operacao + ";" + classe + ";" + dados);
+			clienteControlador.enviarMensagem(operacao + ";" + classe + ";" + dados);
 		}
 		scanner.close();
 	}
 
-	private static void exibirMenuPrincipal() {
-		System.out.println("\n=== MENU PRINCIPAL ===");
-		System.out.println("1. Inserir");
-		System.out.println("2. Atualizar");
-		System.out.println("3. Consultar");
-		System.out.println("4. Remover");
-		System.out.println("5. Listar Todos");
-		System.out.println("0. Sair");
-		System.out.print("Escolha: ");
-	}
-
-	private static String selecionarClasse() {
-		System.out.println("\nSelecione a classe:");
-		System.out.println("1. Pessoa");
-		System.out.println("2. Sócio");
-		System.out.println("3. Visitante");
-		System.out.println("4. Clube");
-		System.out.println("0. Voltar");
-		System.out.print("Escolha: ");
-
-		int opcao = scanner.nextInt();
-		scanner.nextLine();
-
-		return switch (opcao) {
-		case 1 -> "PESSOA";
-		case 2 -> "SOCIO";
-		case 3 -> "VISITANTE";
-		case 4 -> "CLUBE";
-		default -> null;
-		};
-	}
-
-	private static String coletarDados(String operacao, String classe) {
-		try {
-			switch (classe) {
-			case "PESSOA":
-				return coletarDadosPessoa(operacao);
-			case "SOCIO":
-				return coletarDadosSocio(operacao);
-			case "VISITANTE":
-				return coletarDadosVisitante(operacao);
-			case "CLUBE":
-				return coletarDadosClube(operacao);
-			default:
-				return null;
-			}
-		} catch (Exception e) {
-			System.out.println("Erro: " + e.getMessage());
-			return null;
-		}
-	}
-
-	private static String coletarDadosPessoa(String operacao) {
-		if (operacao.equals("LIST")) {
-			return "";
-		}
-
-		System.out.print("CPF: ");
-		String cpf = scanner.nextLine();
-
-		if (operacao.equals("GET") || operacao.equals("DELETE")) {
-			return cpf;
-		}
-
-		System.out.print("Nome: ");
-		String nome = scanner.nextLine();
-
-		System.out.print("Endereço: ");
-		String endereco = scanner.nextLine();
-
-		return cpf + ";" + nome + ";" + endereco;
-	}
-
-	private static String coletarDadosSocio(String operacao) {
-		String dadosPessoa = coletarDadosPessoa(operacao);
-		if (operacao.equals("GET") || operacao.equals("DELETE")) {
-			return dadosPessoa;
-		}
-
-		System.out.print("Matrícula: ");
-		String matricula = scanner.nextLine();
-
-		System.out.print("Ativo (true/false): ");
-		String ativo = scanner.nextLine();
-
-		return dadosPessoa + ";" + matricula + ";" + ativo;
-	}
-
-	private static String coletarDadosVisitante(String operacao) {
-		String dadosPessoa = coletarDadosPessoa(operacao);
-		if (operacao.equals("GET") || operacao.equals("DELETE")) {
-			return dadosPessoa;
-		}
-
-		System.out.print("Código de Acesso: ");
-		String codigoAcesso = scanner.nextLine();
-
-		System.out.print("Email: ");
-		String email = scanner.nextLine();
-
-		System.out.print("Acompanhante (true/false): ");
-		String acompanhante = scanner.nextLine();
-
-		return dadosPessoa + ";" + codigoAcesso + ";" + email + ";" + acompanhante;
-	}
-
-	private static String coletarDadosClube(String operacao) {
-
-		if (operacao.equals("GET") || operacao.equals("DELETE")) {
-			System.out.print("ID do Clube: ");
-			String id = scanner.nextLine();
-			return id;
-		}
-
-		System.out.print("Nome: ");
-		String nome = scanner.nextLine();
-
-		System.out.print("Capacidade: ");
-		String capacidade = scanner.nextLine();
-
-		return nome + ";" + capacidade;
-	}
-
-	private static void enviarMensagem(String mensagem) {
-		try (Socket socket = new Socket("localhost", 8080);
-				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-			out.println(mensagem);
-
-			String resposta = in.readLine();
-
-			if (resposta != null) {
-				System.out.println("\nResposta do servidor:\n" + resposta);
-
-				String linha;
-				while ((linha = in.readLine()) != null) {
-					System.out.println(linha);
-				}
-			}
-
-		} catch (IOException e) {
-			System.out.println("Erro ao conectar ao servidor: " + e.getMessage());
-		}
-	}
 }

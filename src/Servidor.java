@@ -1,11 +1,6 @@
-import model.Clube;
-import model.Pessoa;
-import model.Socio;
-import model.Visitante;
 
 import java.io.*;
 import java.net.*;
-import java.util.*;
 
 import controller.ServidorControlador;
 

@@ -1,10 +1,11 @@
 package controller;
 
 public class ServidorControlador {
-	SocioControlador socioControlador = new SocioControlador();
-	ClubeControlador clubeControlador = new ClubeControlador();
-	PessoaControlador pessoaControlador = new PessoaControlador();
-	VisitanteControlador visitanteControlador = new VisitanteControlador();
+	
+	SocioControlador socioControlador = SocioControlador.getInstancia();
+	ClubeControlador clubeControlador = ClubeControlador.getInstancia();
+	PessoaControlador pessoaControlador = PessoaControlador.getInstancia();
+	VisitanteControlador visitanteControlador = VisitanteControlador.getInstancia();
 
 	public String processarMensagem(String mensagem) {
 		String[] partes = mensagem.split(";");
@@ -27,8 +28,7 @@ public class ServidorControlador {
 
 			// Operações para Socio
 			case "INSERT;SOCIO":
-				return socioControlador.inserirSocio(partes[2], partes[3], partes[4], Integer.parseInt(partes[5]),
-						Boolean.parseBoolean(partes[6]));
+				return socioControlador.inserirSocio(partes[2]);
 			case "UPDATE;SOCIO":
 				return socioControlador.atualizarSocio(partes[2], partes[3], partes[4], Integer.parseInt(partes[5]),
 						Boolean.parseBoolean(partes[6]));
