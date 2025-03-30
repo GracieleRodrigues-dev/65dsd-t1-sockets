@@ -8,6 +8,13 @@ import model.Pessoa;
 public class PessoaControlador {
 	private List<Pessoa> pessoas = new ArrayList<>();
 
+	// PARA TESTES
+	public PessoaControlador() {
+		pessoas.add(new Pessoa("99999999", "Bruno", "Rua XXX"));
+		pessoas.add(new Pessoa("88888888", "Ana", "Rua YYY"));
+		pessoas.add(new Pessoa("77777777", "Maria", "Rua ZZZ"));
+	}
+
 	private Pessoa buscarPessoaPorCpf(String cpf) {
 		for (Pessoa pessoa : pessoas) {
 			if (pessoa.getCpf().equals(cpf)) {
@@ -51,14 +58,20 @@ public class PessoaControlador {
 	}
 
 	public String listarPessoas() {
-		if (pessoas.isEmpty()) {
-			return "0";
+		if (pessoas == null || pessoas.isEmpty()) {
+			return "00";
 		}
+
 		StringBuilder sb = new StringBuilder();
-		sb.append(pessoas.size()).append("\n");
+		sb.append(String.format("%02d", pessoas.size())).append("\n");
+
 		for (Pessoa pessoa : pessoas) {
-			sb.append(pessoa.toString()).append("\n");
+			if (pessoa != null) {
+				sb.append(pessoa.toString()).append("\n");
+				System.out.println("DEBUG: Adicionando -> " + pessoa.toString());
+			}
 		}
-		return sb.toString();
+
+		return sb.toString().trim();
 	}
 }
