@@ -1,8 +1,10 @@
+
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 
 public class Cliente {
+
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -11,24 +13,38 @@ public class Cliente {
             int opcao = scanner.nextInt();
             scanner.nextLine(); // Limpar buffer
 
-            if (opcao == 0) break;
+            if (opcao == 0) {
+                break;
+            }
 
             String operacao = switch (opcao) {
-                case 1 -> "INSERT";
-                case 2 -> "UPDATE";
-                case 3 -> "GET";
-                case 4 -> "DELETE";
-                case 5 -> "LIST";
-                default -> null;
+                case 1 ->
+                    "INSERT";
+                case 2 ->
+                    "UPDATE";
+                case 3 ->
+                    "GET";
+                case 4 ->
+                    "DELETE";
+                case 5 ->
+                    "LIST";
+                default ->
+                    null;
             };
 
-            if (operacao == null) continue;
+            if (operacao == null) {
+                continue;
+            }
 
             String classe = selecionarClasse();
-            if (classe == null) continue;
+            if (classe == null) {
+                continue;
+            }
 
             String dados = coletarDados(operacao, classe);
-            if (dados == null) continue;
+            if (dados == null) {
+                continue;
+            }
 
             enviarMensagem(operacao + ";" + classe + ";" + dados);
         }
@@ -59,11 +75,16 @@ public class Cliente {
         scanner.nextLine();
 
         return switch (opcao) {
-            case 1 -> "PESSOA";
-            case 2 -> "SOCIO";
-            case 3 -> "VISITANTE";
-            case 4 -> "CLUBE";
-            default -> null;
+            case 1 ->
+                "PESSOA";
+            case 2 ->
+                "SOCIO";
+            case 3 ->
+                "VISITANTE";
+            case 4 ->
+                "CLUBE";
+            default ->
+                null;
         };
     }
 
@@ -155,9 +176,7 @@ public class Cliente {
     }
 
     private static void enviarMensagem(String mensagem) {
-        try (Socket socket = new Socket("localhost", 8080);
-             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+        try (Socket socket = new Socket("localhost", 8080); PrintWriter out = new PrintWriter(socket.getOutputStream(), true); BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
             out.println(mensagem);
             String resposta = in.readLine();
