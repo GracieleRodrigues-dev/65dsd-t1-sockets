@@ -13,38 +13,13 @@ public class Cliente {
 		ClienteControlador clienteControlador = new ClienteControlador();
 
 		while (true) {
-			clienteControlador.exibirMenuPrincipal();
-			int opcao = scanner.nextInt();
-			scanner.nextLine();
-
-			if (opcao == 0) {
+			String operacao = clienteControlador.selecionarOperacao();
+			if (operacao == null) {
 				break;
 			}
-
-			String operacao = switch (opcao) {
-			case 1 -> "INSERT";
-			case 2 -> "UPDATE";
-			case 3 -> "GET";
-			case 4 -> "DELETE";
-			case 5 -> "LIST";
-			default -> null;
-			};
-
-			if (operacao == null) {
-				continue;
-			}
-
-			String classe = clienteControlador.selecionarClasse();
-			if (classe == null) {
-				continue;
-			}
-
-			String dados = clienteControlador.coletarDados(operacao, classe);
-			if (dados == null) {
-				continue;
-			}
-
-			clienteControlador.enviarMensagem(operacao + ";" + classe + ";" + dados);
+			clienteControlador.selecionarClasse();
+			clienteControlador.coletarDados();
+			clienteControlador.enviarMensagem();
 		}
 		scanner.close();
 	}

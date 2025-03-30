@@ -12,9 +12,13 @@ import utils.Formulario;
 public class ClienteControlador {
 
 	private static Scanner scanner = new Scanner(System.in);
-	Formulario formulario = new Formulario();
+	Formulario form = new Formulario();
 
-	public void exibirMenuPrincipal() {
+	private String operacao;
+	private String classe;
+	private String dados;
+
+	public String selecionarOperacao() {
 		System.out.println("\n=== MENU PRINCIPAL ===");
 		System.out.println("1. Inserir");
 		System.out.println("2. Atualizar");
@@ -23,9 +27,24 @@ public class ClienteControlador {
 		System.out.println("5. Listar Todos");
 		System.out.println("0. Sair");
 		System.out.print("Escolha: ");
+
+		int opcao = scanner.nextInt();
+		scanner.nextLine();
+
+		String operacaoSelecionada = switch (opcao) {
+		case 1 -> "INSERT";
+		case 2 -> "UPDATE";
+		case 3 -> "GET";
+		case 4 -> "DELETE";
+		case 5 -> "LIST";
+		default -> null;
+		};
+
+		this.operacao = operacaoSelecionada;
+		return operacaoSelecionada;
 	}
 
-	public String selecionarClasse() {
+	public void selecionarClasse() {
 		System.out.println("\nSelecione a classe:");
 		System.out.println("1. Pessoa");
 		System.out.println("2. Sócio");
@@ -37,32 +56,30 @@ public class ClienteControlador {
 		int opcao = scanner.nextInt();
 		scanner.nextLine();
 
-		return switch (opcao) {
+		String classeSelecionada = switch (opcao) {
 		case 1 -> "PESSOA";
 		case 2 -> "SOCIO";
 		case 3 -> "VISITANTE";
 		case 4 -> "CLUBE";
 		default -> null;
 		};
+
+		this.classe = classeSelecionada;
 	}
 
-	public String coletarDados(String operacao, String classe) {
+	public void coletarDados() {
 		try {
-			switch (classe) {
-			case "PESSOA":
-				return coletarDadosPessoa(operacao);
-			case "SOCIO":
-				return coletarDadosSocio(operacao);
-			case "VISITANTE":
-				return coletarDadosVisitante(operacao);
-			case "CLUBE":
-				return coletarDadosClube(operacao);
-			default:
-				return null;
-			}
+			String dadosColetados = switch (classe) {
+			case "PESSOA" -> coletarDadosPessoa(operacao);
+			case "SOCIO" -> coletarDadosSocio(operacao);
+			case "VISITANTE" -> coletarDadosVisitante(operacao);
+			case "CLUBE" -> coletarDadosClube(operacao);
+			default -> null;
+			};
+
+			this.dados = dadosColetados;
 		} catch (Exception e) {
 			System.out.println("Erro: " + e.getMessage());
-			return null;
 		}
 	}
 
@@ -71,12 +88,12 @@ public class ClienteControlador {
 			return "";
 		}
 		if (operacao.equals("GET") || operacao.equals("DELETE")) {
-			return formulario.coletarValor("CPF");
+			return form.coletarCPF();
 		}
 
-		String cpf = formulario.coletarValor("CPF");
-		String nome = formulario.coletarValor("Nome");
-		String endereco = formulario.coletarValor("Endereço");
+		String cpf = form.coletarCPF();
+		String nome = form.coletarNome();
+		String endereco = form.coletarEndereco();
 
 		return cpf + ";" + nome + ";" + endereco;
 	}
@@ -86,12 +103,12 @@ public class ClienteControlador {
 			return "";
 		}
 		if (operacao.equals("INSERT") || operacao.equals("GET") || operacao.equals("DELETE")) {
-			return formulario.coletarValor("CPF");
+			return form.coletarCPF();
 		}
 
 		String dadosPessoa = coletarDadosPessoa(operacao);
-		String matricula = formulario.coletarValor("Endereço");
-		String ativo = formulario.coletarValor("Ativo (true/false)");
+		String ativo = form.coletarStatus();
+		String matricula = form.coletarEndereco();
 
 		return dadosPessoa + ";" + matricula + ";" + ativo;
 	}
@@ -102,13 +119,13 @@ public class ClienteControlador {
 		}
 
 		if (operacao.equals("GET") || operacao.equals("DELETE")) {
-			return formulario.coletarValor("CPF");
+			return form.coletarCPF();
 		}
 
 		String dadosPessoa = coletarDadosPessoa(operacao);
-		String codigoAcesso = formulario.coletarValor("Código de Acesso: ");
-		String email = formulario.coletarValor("Email: ");
-		String acompanhante = formulario.coletarValor("Acompanhante (true/false): ");
+		String email = form.coletarEmail();
+		String acompanhante = form.coletarAcompanhante();
+		String codigoAcesso = form.coletarCodigoDeAcesso();
 
 		return dadosPessoa + ";" + codigoAcesso + ";" + email + ";" + acompanhante;
 	}
@@ -118,20 +135,20 @@ public class ClienteControlador {
 			return "";
 		}
 		if (operacao.equals("GET") || operacao.equals("DELETE")) {
-			return formulario.coletarValor("ID do Clube: ");
+			return form.coletarClubeId();
 		}
 
-		String nome = formulario.coletarValor("Nome: ");
-		String capacidade = formulario.coletarValor("Capacidade: ");
+		String nome = form.coletarNome();
+		String capacidade = form.coletarCapacidade();
 
 		return nome + ";" + capacidade;
 	}
 
-	public void enviarMensagem(String mensagem) {
+	public void enviarMensagem() {
 		try (Socket socket = new Socket("localhost", 8080);
 				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-			out.println(mensagem);
+			out.println(operacao + ";" + classe + ";" + dados);
 
 			String resposta = in.readLine();
 
