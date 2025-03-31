@@ -15,10 +15,9 @@ public class ServidorControlador {
 
 		pessoaControlador.setSocioControlador(socioControlador);
 		pessoaControlador.setVisitanteControlador(visitanteControlador);
-
 		socioControlador.setPessoaControlador(pessoaControlador);
-
 		visitanteControlador.setPessoaControalador(pessoaControlador);
+		clubeControlador.setSocioControlador(socioControlador);
 	}
 
 	public String processarMensagem(String mensagem) {
@@ -41,9 +40,9 @@ public class ServidorControlador {
 				return pessoaControlador.listarPessoas();
 
 			case "INSERT;SOCIO":
-				return socioControlador.inserirSocio(partes[2]);
+				return socioControlador.inserirSocio(partes[2], Integer.parseInt(partes[3]));
 			case "UPDATE;SOCIO":
-				return socioControlador.atualizarSocio(partes[2], Boolean.parseBoolean(partes[3]));
+				return socioControlador.atualizarSocio(partes[2], Boolean.parseBoolean(partes[3]), Integer.parseInt(partes[4]));
 			case "GET;SOCIO":
 				return socioControlador.obterSocio(partes[2]);
 			case "DELETE;SOCIO":

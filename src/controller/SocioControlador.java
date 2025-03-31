@@ -35,7 +35,7 @@ public class SocioControlador {
 		return null;
 	}
 
-	public String inserirSocio(String cpf) {
+	public String inserirSocio(String cpf, int clubeId) {
 		if (buscarSocioPorCpf(cpf) != null) {
 			return "Erro: Sócio com este CPF já existe!";
 		}
@@ -50,21 +50,22 @@ public class SocioControlador {
 		int matricula = 10000 + random.nextInt(90000);
 		boolean ativo = true;
 
-		Socio socio = new Socio(cpf, nome, endereco, matricula, ativo);
+		Socio socio = new Socio(cpf, nome, endereco, matricula, ativo, clubeId);
 		socios.add(socio);
 
 		return "Sócio inserido com sucesso";
 	}
 
-	public String atualizarSocio(String cpf, boolean ativo) {
+	public String atualizarSocio(String cpf, boolean ativo, int clubeId) {
 		Socio socio = buscarSocioPorCpf(cpf);
 		if (socio != null) {
 			socio.setAtivo(ativo);
+			socio.setClubeId(clubeId);
 			return "Sócio atualizado com sucesso";
 		}
 		return "Sócio não encontrado";
 	}
-	
+
 	public boolean sincronizarPessoa(String cpf, String nome, String endereco) {
 		Socio socio = buscarSocioPorCpf(cpf);
 		if (socio != null) {
@@ -97,6 +98,19 @@ public class SocioControlador {
 		sb.append(socios.size()).append("\n");
 		for (Socio socio : socios) {
 			sb.append(socio.toString()).append("\n");
+		}
+		return sb.toString();
+	}
+
+	public String listarSociosPorClube(int clubeId) {
+		if (socios.isEmpty()) {
+			return "0";
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append(socios.size()).append("\n");
+		for (Socio socio : socios) {
+			if (socio.getClubeId() == clubeId)
+				sb.append(socio.toString()).append("\n");
 		}
 		return sb.toString();
 	}

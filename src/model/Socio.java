@@ -3,14 +3,15 @@ package model;
 public class Socio extends Pessoa {
 	private int matricula;
 	private boolean ativo;
+	private int clubeId;
 
-	public Socio(String cpf, String nome, String endereco, int matricula, boolean ativo) {
+	public Socio(String cpf, String nome, String endereco, int matricula, boolean ativo, int clubeId) {
 		super(cpf, nome, endereco);
 		this.matricula = matricula;
 		this.ativo = ativo;
+		this.clubeId = clubeId;
 	}
 
-	// Getters e Setters
 	public int getMatricula() {
 		return matricula;
 	}
@@ -30,5 +31,13 @@ public class Socio extends Pessoa {
 
 	public void setMatricula(int matricula) {
 		this.matricula = matricula;
+	}
+
+	public int getClubeId() {
+		return clubeId;
+	}
+
+	public void setClubeId(int clubeId) {
+		this.clubeId = clubeId;
 	}
 }

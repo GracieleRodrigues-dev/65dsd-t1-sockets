@@ -103,13 +103,16 @@ public class ClienteControlador {
 			return "";
 		}
 		if (operacao.equals("INSERT") || operacao.equals("GET") || operacao.equals("DELETE")) {
-			return form.coletarCPF();
+			String cpf = form.coletarCPF();
+			String clubeId = form.coletarClubeId();
+			return cpf + ";"  + clubeId;
 		}
 
 		String cpf = form.coletarCPF();
 		String ativo = form.coletarStatus();
+		String clubeId = form.coletarClubeId();
 
-		return cpf + ";" + ativo;
+		return cpf + ";" + ativo + ";" + clubeId;
 	}
 
 	public String coletarDadosVisitante(String operacao) {

@@ -8,9 +8,18 @@ import model.Clube;
 public class ClubeControlador {
 
 	private List<Clube> clubes;
+	private SocioControlador socioControlador;
 
 	public ClubeControlador() {
 		this.clubes = new ArrayList<>();
+	}
+
+	public SocioControlador getSocioControlador() {
+		return socioControlador;
+	}
+
+	public void setSocioControlador(SocioControlador socioControlador) {
+		this.socioControlador = socioControlador;
 	}
 
 	public String inserirClube(String nome, int capacidade) {
@@ -31,7 +40,17 @@ public class ClubeControlador {
 
 	public String obterClube(int id) {
 		Clube clube = buscarClubePorId(id);
-		return clube != null ? clube.toString() : "Clube não encontrado";
+
+		if (clube != null) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(clubes.size()).append("\n");
+
+			String socios = socioControlador.listarSociosPorClube(id);
+
+			return "\n" + clube.toString() + "\n" + socios;
+		}
+
+		return "Clube não encontrado";
 	}
 
 	public String removerClube(int id) {

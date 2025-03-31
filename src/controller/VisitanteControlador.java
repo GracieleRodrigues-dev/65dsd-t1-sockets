@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Pessoa;
-import model.Socio;
 import model.Visitante;
 
 public class VisitanteControlador {
