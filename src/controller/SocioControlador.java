@@ -8,94 +8,90 @@ import model.Pessoa;
 import model.Socio;
 
 public class SocioControlador {
-    private static SocioControlador instancia;
-    private List<Socio> socios;
-    private Random random;
-    private PessoaControlador pessoaControlador;
+	private List<Socio> socios;
 
-    private SocioControlador() {
-        this.socios = new ArrayList<>();
-        this.random = new Random();
-        this.pessoaControlador = PessoaControlador.getInstancia();
-    }
+	private Random random;
+	private PessoaControlador pessoaControlador;
 
-    public static SocioControlador getInstancia() {
-        if (instancia == null) {
-            synchronized (SocioControlador.class) {
-                if (instancia == null) {
-                    instancia = new SocioControlador();
-                }
-            }
-        }
-        return instancia;
-    }
+	public SocioControlador() {
+		this.socios = new ArrayList<>();
+		this.random = new Random();
+	}
 
-    public Socio buscarSocioPorCpf(String cpf) {
-        for (Socio socio : socios) {
-            if (socio.getCpf().equals(cpf)) {
-                return socio;
-            }
-        }
-        return null;
-    }
+	public PessoaControlador getPessoaControlador() {
+		return pessoaControlador;
+	}
 
-    public String inserirSocio(String cpf) {
-        if (buscarSocioPorCpf(cpf) != null) {
-            return "Erro: Sócio com este CPF já existe!";
-        }
+	public void setPessoaControlador(PessoaControlador pessoaControlador) {
+		this.pessoaControlador = pessoaControlador;
+	}
 
-        Pessoa pessoa = pessoaControlador.buscarPessoaPorCpf(cpf);
+	public Socio buscarSocioPorCpf(String cpf) {
+		for (Socio socio : socios) {
+			if (socio.getCpf().equals(cpf)) {
+				return socio;
+			}
+		}
+		return null;
+	}
 
-        if (pessoa == null) {
-            return "Erro: Pessoa ainda não registrada!";
-        }
+	public String inserirSocio(String cpf) {
+		if (buscarSocioPorCpf(cpf) != null) {
+			return "Erro: Sócio com este CPF já existe!";
+		}
 
-        String nome = pessoa.getNome();
-        String endereco = pessoa.getEndereco();
-        int matricula = 10000 + random.nextInt(90000);
-        boolean ativo = true;
+		Pessoa pessoa = pessoaControlador.buscarPessoaPorCpf(cpf);
 
-        Socio socio = new Socio(cpf, nome, endereco, matricula, ativo);
-        socios.add(socio);
+		if (pessoa == null) {
+			return "Erro: Pessoa ainda não registrada!";
+		}
 
-        return "Sócio inserido com sucesso";
-    }
+		String nome = pessoa.getNome();
+		String endereco = pessoa.getEndereco();
+		int matricula = 10000 + random.nextInt(90000);
+		boolean ativo = true;
 
-    public String atualizarSocio(String cpf, String nome, String endereco, int matricula, boolean ativo) {
-        Socio socio = buscarSocioPorCpf(cpf);
-        if (socio != null) {
-            socio.setNome(nome);
-            socio.setEndereco(endereco);
-            socio.setMatricula(matricula);
-            socio.setAtivo(ativo);
-            return "Sócio atualizado com sucesso";
-        }
-        return "Sócio não encontrado";
-    }
+		Socio socio = new Socio(cpf, nome, endereco, matricula, ativo);
+		socios.add(socio);
 
-    public String obterSocio(String cpf) {
-        Socio socio = buscarSocioPorCpf(cpf);
-        return socio != null ? socio.toString() : "Sócio não encontrado";
-    }
+		return "Sócio inserido com sucesso";
+	}
 
-    public String removerSocio(String cpf) {
-        Socio socio = buscarSocioPorCpf(cpf);
-        if (socio != null) {
-            socios.remove(socio);
-            return "Sócio removido com sucesso";
-        }
-        return "Sócio não encontrado";
-    }
+	public String atualizarSocio(String cpf, String nome, String endereco, int matricula, boolean ativo) {
+		Socio socio = buscarSocioPorCpf(cpf);
+		if (socio != null) {
+			socio.setNome(nome);
+			socio.setEndereco(endereco);
+			socio.setMatricula(matricula);
+			socio.setAtivo(ativo);
+			return "Sócio atualizado com sucesso";
+		}
+		return "Sócio não encontrado";
+	}
 
-    public String listarSocios() {
-        if (socios.isEmpty()) {
-            return "0";
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append(socios.size()).append("\n");
-        for (Socio socio : socios) {
-            sb.append(socio.toString()).append("\n");
-        }
-        return sb.toString();
-    }
+	public String obterSocio(String cpf) {
+		Socio socio = buscarSocioPorCpf(cpf);
+		return socio != null ? socio.toString() : "Sócio não encontrado";
+	}
+
+	public String removerSocio(String cpf) {
+		Socio socio = buscarSocioPorCpf(cpf);
+		if (socio != null) {
+			socios.remove(socio);
+			return "Sócio removido com sucesso";
+		}
+		return "Sócio não encontrado";
+	}
+
+	public String listarSocios() {
+		if (socios.isEmpty()) {
+			return "0";
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append(socios.size()).append("\n");
+		for (Socio socio : socios) {
+			sb.append(socio.toString()).append("\n");
+		}
+		return sb.toString();
+	}
 }

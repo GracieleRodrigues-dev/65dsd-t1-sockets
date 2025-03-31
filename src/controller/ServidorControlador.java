@@ -1,11 +1,23 @@
 package controller;
 
 public class ServidorControlador {
+
+	SocioControlador socioControlador;
+	ClubeControlador clubeControlador;
+	PessoaControlador pessoaControlador;
+	VisitanteControlador visitanteControlador;
 	
-	SocioControlador socioControlador = SocioControlador.getInstancia();
-	ClubeControlador clubeControlador = ClubeControlador.getInstancia();
-	PessoaControlador pessoaControlador = PessoaControlador.getInstancia();
-	VisitanteControlador visitanteControlador = VisitanteControlador.getInstancia();
+	public ServidorControlador() {
+		this.socioControlador = new SocioControlador();
+		this.clubeControlador = new ClubeControlador();
+		this.pessoaControlador = new PessoaControlador();
+		this.visitanteControlador = new VisitanteControlador();
+		
+		pessoaControlador.setSocioControlador(socioControlador);
+		pessoaControlador.setVisitanteControlador(visitanteControlador);
+		
+		socioControlador.setPessoaControlador(pessoaControlador);
+	}
 
 	public String processarMensagem(String mensagem) {
 		String[] partes = mensagem.split(";");
@@ -14,7 +26,7 @@ public class ServidorControlador {
 
 		try {
 			switch (operacao + ";" + classe) {
-			// Operações para Pessoa
+			
 			case "INSERT;PESSOA":
 				return pessoaControlador.inserirPessoa(partes[2], partes[3], partes[4]);
 			case "UPDATE;PESSOA":
@@ -26,7 +38,7 @@ public class ServidorControlador {
 			case "LIST;PESSOA":
 				return pessoaControlador.listarPessoas();
 
-			// Operações para Socio
+				
 			case "INSERT;SOCIO":
 				return socioControlador.inserirSocio(partes[2]);
 			case "UPDATE;SOCIO":
@@ -39,7 +51,7 @@ public class ServidorControlador {
 			case "LIST;SOCIO":
 				return socioControlador.listarSocios();
 
-			// Operações para Visitante
+				
 			case "INSERT;VISITANTE":
 				return visitanteControlador.inserirVisitante(partes[2], partes[3], partes[4],
 						Integer.parseInt(partes[5]), partes[6], Boolean.parseBoolean(partes[7]));
@@ -53,7 +65,7 @@ public class ServidorControlador {
 			case "LIST;VISITANTE":
 				return visitanteControlador.listarVisitantes();
 
-			// Operações para Clube
+
 			case "INSERT;CLUBE":
 				return clubeControlador.inserirClube(partes[2], Integer.parseInt(partes[3]));
 			case "UPDATE;CLUBE":

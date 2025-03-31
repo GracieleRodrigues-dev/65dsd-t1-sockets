@@ -6,72 +6,61 @@ import java.util.List;
 import model.Clube;
 
 public class ClubeControlador {
-    private static ClubeControlador instancia;
-    private List<Clube> clubes;
 
-    private ClubeControlador() {
-        this.clubes = new ArrayList<>();
-    }
+	private List<Clube> clubes;
 
-    public static ClubeControlador getInstancia() {
-        if (instancia == null) {
-            synchronized (ClubeControlador.class) {
-                if (instancia == null) {
-                    instancia = new ClubeControlador();
-                }
-            }
-        }
-        return instancia;
-    }
+	public ClubeControlador() {
+		this.clubes = new ArrayList<>();
+	}
 
-    public String inserirClube(String nome, int capacidade) {
-        Clube clube = new Clube(nome, capacidade);
-        clubes.add(clube);
-        return "Clube inserido com sucesso";
-    }
+	public String inserirClube(String nome, int capacidade) {
+		Clube clube = new Clube(nome, capacidade);
+		clubes.add(clube);
+		return "Clube inserido com sucesso";
+	}
 
-    public String atualizarClube(int id, String nome, int capacidade) {
-        Clube clube = buscarClubePorId(id);
-        if (clube != null) {
-            clube.setNome(nome);
-            clube.setCapacidade(capacidade);
-            return "Clube atualizado com sucesso";
-        }
-        return "Clube não encontrado";
-    }
+	public String atualizarClube(int id, String nome, int capacidade) {
+		Clube clube = buscarClubePorId(id);
+		if (clube != null) {
+			clube.setNome(nome);
+			clube.setCapacidade(capacidade);
+			return "Clube atualizado com sucesso";
+		}
+		return "Clube não encontrado";
+	}
 
-    public String obterClube(int id) {
-        Clube clube = buscarClubePorId(id);
-        return clube != null ? clube.toString() : "Clube não encontrado";
-    }
+	public String obterClube(int id) {
+		Clube clube = buscarClubePorId(id);
+		return clube != null ? clube.toString() : "Clube não encontrado";
+	}
 
-    public String removerClube(int id) {
-        Clube clube = buscarClubePorId(id);
-        if (clube != null) {
-            clubes.remove(clube);
-            return "Clube removido com sucesso";
-        }
-        return "Clube não encontrado";
-    }
+	public String removerClube(int id) {
+		Clube clube = buscarClubePorId(id);
+		if (clube != null) {
+			clubes.remove(clube);
+			return "Clube removido com sucesso";
+		}
+		return "Clube não encontrado";
+	}
 
-    public String listarClubes() {
-        if (clubes.isEmpty()) {
-            return "0";
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append(clubes.size()).append("\n");
-        for (Clube clube : clubes) {
-            sb.append(clube.toString()).append("\n");
-        }
-        return sb.toString();
-    }
+	public String listarClubes() {
+		if (clubes.isEmpty()) {
+			return "0";
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append(clubes.size()).append("\n");
+		for (Clube clube : clubes) {
+			sb.append(clube.toString()).append("\n");
+		}
+		return sb.toString();
+	}
 
-    public Clube buscarClubePorId(int id) {
-        for (Clube clube : clubes) {
-            if (clube.getId() == id) {
-                return clube;
-            }
-        }
-        return null;
-    }
+	public Clube buscarClubePorId(int id) {
+		for (Clube clube : clubes) {
+			if (clube.getId() == id) {
+				return clube;
+			}
+		}
+		return null;
+	}
 }
