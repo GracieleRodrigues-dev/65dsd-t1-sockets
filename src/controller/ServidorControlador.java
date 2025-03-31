@@ -6,17 +6,19 @@ public class ServidorControlador {
 	ClubeControlador clubeControlador;
 	PessoaControlador pessoaControlador;
 	VisitanteControlador visitanteControlador;
-	
+
 	public ServidorControlador() {
 		this.socioControlador = new SocioControlador();
 		this.clubeControlador = new ClubeControlador();
 		this.pessoaControlador = new PessoaControlador();
 		this.visitanteControlador = new VisitanteControlador();
-		
+
 		pessoaControlador.setSocioControlador(socioControlador);
 		pessoaControlador.setVisitanteControlador(visitanteControlador);
-		
+
 		socioControlador.setPessoaControlador(pessoaControlador);
+
+		visitanteControlador.setPessoaControalador(pessoaControlador);
 	}
 
 	public String processarMensagem(String mensagem) {
@@ -26,7 +28,7 @@ public class ServidorControlador {
 
 		try {
 			switch (operacao + ";" + classe) {
-			
+
 			case "INSERT;PESSOA":
 				return pessoaControlador.inserirPessoa(partes[2], partes[3], partes[4]);
 			case "UPDATE;PESSOA":
@@ -38,12 +40,10 @@ public class ServidorControlador {
 			case "LIST;PESSOA":
 				return pessoaControlador.listarPessoas();
 
-				
 			case "INSERT;SOCIO":
 				return socioControlador.inserirSocio(partes[2]);
 			case "UPDATE;SOCIO":
-				return socioControlador.atualizarSocio(partes[2], partes[3], partes[4], Integer.parseInt(partes[5]),
-						Boolean.parseBoolean(partes[6]));
+				return socioControlador.atualizarSocio(partes[2], Boolean.parseBoolean(partes[3]));
 			case "GET;SOCIO":
 				return socioControlador.obterSocio(partes[2]);
 			case "DELETE;SOCIO":
@@ -51,20 +51,18 @@ public class ServidorControlador {
 			case "LIST;SOCIO":
 				return socioControlador.listarSocios();
 
-				
 			case "INSERT;VISITANTE":
-				return visitanteControlador.inserirVisitante(partes[2], partes[3], partes[4],
-						Integer.parseInt(partes[5]), partes[6], Boolean.parseBoolean(partes[7]));
+				return visitanteControlador.inserirVisitante(partes[2], Integer.parseInt(partes[3]), partes[4],
+						Boolean.parseBoolean(partes[5]));
 			case "UPDATE;VISITANTE":
-				return visitanteControlador.atualizarVisitante(partes[2], partes[3], partes[4],
-						Integer.parseInt(partes[5]), partes[6], Boolean.parseBoolean(partes[7]));
+				return visitanteControlador.atualizarVisitante(partes[2], Integer.parseInt(partes[3]), partes[4],
+						Boolean.parseBoolean(partes[5]));
 			case "GET;VISITANTE":
 				return visitanteControlador.obterVisitante(partes[2]);
 			case "DELETE;VISITANTE":
 				return visitanteControlador.removerVisitante(partes[2]);
 			case "LIST;VISITANTE":
 				return visitanteControlador.listarVisitantes();
-
 
 			case "INSERT;CLUBE":
 				return clubeControlador.inserirClube(partes[2], Integer.parseInt(partes[3]));

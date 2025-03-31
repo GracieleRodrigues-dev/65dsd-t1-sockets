@@ -106,11 +106,10 @@ public class ClienteControlador {
 			return form.coletarCPF();
 		}
 
-		String dadosPessoa = coletarDadosPessoa(operacao);
+		String cpf = form.coletarCPF();
 		String ativo = form.coletarStatus();
-		String matricula = form.coletarEndereco();
 
-		return dadosPessoa + ";" + matricula + ";" + ativo;
+		return cpf + ";" + ativo;
 	}
 
 	public String coletarDadosVisitante(String operacao) {
@@ -122,12 +121,12 @@ public class ClienteControlador {
 			return form.coletarCPF();
 		}
 
-		String dadosPessoa = coletarDadosPessoa(operacao);
+		String cpf = form.coletarCPF();
 		String email = form.coletarEmail();
 		String acompanhante = form.coletarAcompanhante();
 		String codigoAcesso = form.coletarCodigoDeAcesso();
 
-		return dadosPessoa + ";" + codigoAcesso + ";" + email + ";" + acompanhante;
+		return cpf + ";" + codigoAcesso + ";" + email + ";" + acompanhante;
 	}
 
 	public String coletarDadosClube(String operacao) {

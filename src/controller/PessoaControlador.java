@@ -54,9 +54,26 @@ public class PessoaControlador {
 	public String atualizarPessoa(String cpf, String nome, String endereco) {
 		Pessoa pessoa = buscarPessoaPorCpf(cpf);
 		if (pessoa != null) {
+
 			pessoa.setNome(nome);
 			pessoa.setEndereco(endereco);
-			return "Pessoa atualizada com sucesso";
+
+			String message = "";
+
+			message += "Pessoa atualizada com sucesso!";
+
+			boolean sincronizacaoSocio = socioControlador.sincronizarPessoa(cpf, nome, endereco);
+			boolean sincronizacaoVisitante = visitanteControlador.sincronizarPessoa(cpf, nome, endereco);
+
+			if (sincronizacaoSocio) {
+				message += "\n- Sincronizado um registro de sócio relacionado a pessoa";
+			}
+
+			if (sincronizacaoVisitante) {
+				message += "\n- Sincronizado um registro de visitante relacionado a pessoa";
+			}
+
+			return message;
 		}
 		return "Pessoa não encontrada";
 	}
@@ -70,22 +87,23 @@ public class PessoaControlador {
 		Pessoa pessoa = buscarPessoaPorCpf(cpf);
 		if (pessoa != null) {
 
+			pessoas.remove(pessoa);
+
 			String message = "";
+
+			message += "Pessoa removida com sucesso!";
 
 			String resultadoRemocaoSocio = socioControlador.removerSocio(cpf);
 			String resultadoRemocaoVisitante = visitanteControlador.removerVisitante(cpf);
 
 			if ("Sócio removido com sucesso".equals(resultadoRemocaoSocio)) {
-				message += "\nRemovido um registro de sócio relacionado a pessoa";
+				message += "\n- Removido um registro de sócio relacionado a pessoa";
 			}
 
 			if ("Visitante removido com sucesso".equals(resultadoRemocaoVisitante)) {
-				message += "\nRemovido um registro de visitante relacionado a pessoa";
+				message += "\n- Removido um registro de visitante relacionado a pessoa";
 			}
 
-			pessoas.remove(pessoa);
-
-			message += "\nPessoa removida com sucesso";
 			return message;
 		}
 		return "Pessoa não encontrada";

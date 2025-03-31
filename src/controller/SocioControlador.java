@@ -41,7 +41,6 @@ public class SocioControlador {
 		}
 
 		Pessoa pessoa = pessoaControlador.buscarPessoaPorCpf(cpf);
-
 		if (pessoa == null) {
 			return "Erro: Pessoa ainda não registrada!";
 		}
@@ -57,16 +56,23 @@ public class SocioControlador {
 		return "Sócio inserido com sucesso";
 	}
 
-	public String atualizarSocio(String cpf, String nome, String endereco, int matricula, boolean ativo) {
+	public String atualizarSocio(String cpf, boolean ativo) {
 		Socio socio = buscarSocioPorCpf(cpf);
 		if (socio != null) {
-			socio.setNome(nome);
-			socio.setEndereco(endereco);
-			socio.setMatricula(matricula);
 			socio.setAtivo(ativo);
 			return "Sócio atualizado com sucesso";
 		}
 		return "Sócio não encontrado";
+	}
+	
+	public boolean sincronizarPessoa(String cpf, String nome, String endereco) {
+		Socio socio = buscarSocioPorCpf(cpf);
+		if (socio != null) {
+			socio.setNome(nome);
+			socio.setEndereco(endereco);
+			return true;
+		}
+		return false;
 	}
 
 	public String obterSocio(String cpf) {

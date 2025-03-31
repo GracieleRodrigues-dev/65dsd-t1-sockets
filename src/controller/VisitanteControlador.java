@@ -3,13 +3,25 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Pessoa;
+import model.Socio;
 import model.Visitante;
 
 public class VisitanteControlador {
 	private List<Visitante> visitantes;
 
+	PessoaControlador pessoaControlador;
+
 	public VisitanteControlador() {
 		this.visitantes = new ArrayList<>();
+	}
+
+	public PessoaControlador getPessoaControalador() {
+		return pessoaControlador;
+	}
+
+	public void setPessoaControalador(PessoaControlador pessoaControlador) {
+		this.pessoaControlador = pessoaControlador;
 	}
 
 	public Visitante buscarVisitantePorCpf(String cpf) {
@@ -21,28 +33,44 @@ public class VisitanteControlador {
 		return null;
 	}
 
-	public String inserirVisitante(String cpf, String nome, String endereco, int codigoAcesso, String email,
-			boolean acompanhante) {
+	public String inserirVisitante(String cpf, int codigoAcesso, String email, boolean acompanhante) {
 		if (buscarVisitantePorCpf(cpf) != null) {
 			return "Erro: Visitante com este CPF já existe";
 		}
+
+		Pessoa pessoa = pessoaControlador.buscarPessoaPorCpf(cpf);
+		if (pessoa == null) {
+			return "Erro: Pessoa ainda não registrada!";
+		}
+
+		String nome = pessoa.getNome();
+		String endereco = pessoa.getEndereco();
+
 		Visitante visitante = new Visitante(cpf, nome, endereco, codigoAcesso, email, acompanhante);
 		visitantes.add(visitante);
+
 		return "Visitante inserido com sucesso";
 	}
 
-	public String atualizarVisitante(String cpf, String nome, String endereco, int codigoAcesso, String email,
-			boolean acompanhante) {
+	public String atualizarVisitante(String cpf, int codigoAcesso, String email, boolean acompanhante) {
 		Visitante visitante = buscarVisitantePorCpf(cpf);
 		if (visitante != null) {
-			visitante.setNome(nome);
-			visitante.setEndereco(endereco);
 			visitante.setCodigoAcesso(codigoAcesso);
 			visitante.setEmail(email);
 			visitante.setAcompanhante(acompanhante);
 			return "Visitante atualizado com sucesso";
 		}
 		return "Visitante não encontrado";
+	}
+
+	public boolean sincronizarPessoa(String cpf, String nome, String endereco) {
+		Visitante visitante = buscarVisitantePorCpf(cpf);
+		if (visitante != null) {
+			visitante.setNome(nome);
+			visitante.setEndereco(endereco);
+			return true;
+		}
+		return false;
 	}
 
 	public String obterVisitante(String cpf) {
