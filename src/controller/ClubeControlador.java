@@ -12,6 +12,8 @@ public class ClubeControlador {
 
 	public ClubeControlador() {
 		this.clubes = new ArrayList<>();
+
+		clubes.add(new Clube("Batatas", 100));
 	}
 
 	public SocioControlador getSocioControlador() {
@@ -55,9 +57,15 @@ public class ClubeControlador {
 
 	public String removerClube(int id) {
 		Clube clube = buscarClubePorId(id);
+
 		if (clube != null) {
 			clubes.remove(clube);
-			return "Clube removido com sucesso";
+
+			StringBuilder sb = new StringBuilder();
+			sb.append("Clube removido com sucesso!");
+			sb.append("\n").append(socioControlador.removerSociosPorClube(id));
+
+			return sb.toString();
 		}
 		return "Clube não encontrado";
 	}

@@ -16,6 +16,10 @@ public class SocioControlador {
 	public SocioControlador() {
 		this.socios = new ArrayList<>();
 		this.random = new Random();
+
+		socios.add(new Socio("39020382190389", "Bruno", "Rua 1", 123213, true, 1));
+		socios.add(new Socio("37218936271368", "Ana", "Rua 2", 8392167, true, 1));
+		socios.add(new Socio("32131231234324", "Joao", "Rua 3", 8392167, true, 1));
 	}
 
 	public PessoaControlador getPessoaControlador() {
@@ -88,6 +92,34 @@ public class SocioControlador {
 			return "Sócio removido com sucesso";
 		}
 		return "Sócio não encontrado";
+	}
+
+	public String removerSociosPorClube(int clubeId) {
+		if (socios.isEmpty()) {
+			return "0";
+		}
+
+		List<String> sociosRemovidos = new ArrayList<>();
+
+		for (int i = socios.size() - 1; i >= 0; i--) {
+			Socio socio = socios.get(i);
+			if (socio.getClubeId() == clubeId) {
+				sociosRemovidos.add(socio.toString());
+				socios.remove(i);
+			}
+		}
+
+		if (sociosRemovidos.isEmpty()) {
+			return "0";
+		}
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("Sócios removidos: ");
+		for (String removido : sociosRemovidos) {
+			sb.append("\n").append("- ").append(removido);
+		}
+
+		return sb.toString();
 	}
 
 	public String listarSocios() {
