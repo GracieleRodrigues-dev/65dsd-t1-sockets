@@ -81,6 +81,9 @@ public class SocioControlador {
 			if (clubeControlador.buscarClubePorId(clubeId) == null) {
 				return "Erro: O clube não existe!";
 			}
+			if (clubeControlador.limiteDeCapacidadeAtingido(clubeId) == true) {
+				return "Erro: Foi atingido o limite de capacidade do clube!";
+			}
 
 			socio.setAtivo(ativo);
 			socio.setClubeId(clubeId);
