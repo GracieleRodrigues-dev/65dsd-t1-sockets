@@ -75,6 +75,10 @@ public class SocioControlador {
 	public String atualizarSocio(String cpf, boolean ativo, int clubeId) {
 		Socio socio = buscarSocioPorCpf(cpf);
 		if (socio != null) {
+			if (clubeControlador.buscarClubePorId(clubeId) == null) {
+				return "Erro: O clube não existe!";
+			}
+
 			socio.setAtivo(ativo);
 			socio.setClubeId(clubeId);
 			return "Sócio atualizado com sucesso";
