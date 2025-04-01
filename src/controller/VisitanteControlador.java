@@ -19,7 +19,7 @@ public class VisitanteControlador {
 		return pessoaControlador;
 	}
 
-	public void setPessoaControalador(PessoaControlador pessoaControlador) {
+	public void setPessoaControlador(PessoaControlador pessoaControlador) {
 		this.pessoaControlador = pessoaControlador;
 	}
 
