@@ -16,6 +16,7 @@ public class ServidorControlador {
 		pessoaControlador.setSocioControlador(socioControlador);
 		pessoaControlador.setVisitanteControlador(visitanteControlador);
 		socioControlador.setPessoaControlador(pessoaControlador);
+		socioControlador.setClubeControlador(clubeControlador);
 		visitanteControlador.setPessoaControlador(pessoaControlador);
 		clubeControlador.setSocioControlador(socioControlador);
 	}

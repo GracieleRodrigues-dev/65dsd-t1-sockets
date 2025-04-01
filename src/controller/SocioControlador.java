@@ -12,6 +12,7 @@ public class SocioControlador {
 
 	private Random random;
 	private PessoaControlador pessoaControlador;
+	private ClubeControlador clubeControlador;
 
 	public SocioControlador() {
 		this.socios = new ArrayList<>();
@@ -30,6 +31,14 @@ public class SocioControlador {
 		this.pessoaControlador = pessoaControlador;
 	}
 
+	public ClubeControlador getClubeControlador() {
+		return clubeControlador;
+	}
+
+	public void setClubeControlador(ClubeControlador clubeControlador) {
+		this.clubeControlador = clubeControlador;
+	}
+
 	public Socio buscarSocioPorCpf(String cpf) {
 		for (Socio socio : socios) {
 			if (socio.getCpf().equals(cpf)) {
@@ -42,6 +51,9 @@ public class SocioControlador {
 	public String inserirSocio(String cpf, int clubeId) {
 		if (buscarSocioPorCpf(cpf) != null) {
 			return "Erro: Sócio com este CPF já existe!";
+		}
+		if (clubeControlador.buscarClubePorId(clubeId) == null) {
+			return "Erro: O clube não existe!";
 		}
 
 		Pessoa pessoa = pessoaControlador.buscarPessoaPorCpf(cpf);
