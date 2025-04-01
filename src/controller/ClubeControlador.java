@@ -13,7 +13,7 @@ public class ClubeControlador {
 	public ClubeControlador() {
 		this.clubes = new ArrayList<>();
 
-		clubes.add(new Clube("Batatas", 100));
+		clubes.add(new Clube("Batatas", 3));
 	}
 
 	public SocioControlador getSocioControlador() {
@@ -79,5 +79,13 @@ public class ClubeControlador {
 			}
 		}
 		return null;
+	}
+
+	public boolean limiteDeCapacidadeAtingido(int clubeId) {
+		Clube clube = buscarClubePorId(clubeId);
+		if (socioControlador.contarSociosPorClube(clubeId) == clube.getCapacidade()) {
+			return true;
+		}
+		return false;
 	}
 }

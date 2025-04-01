@@ -20,7 +20,7 @@ public class SocioControlador {
 
 		socios.add(new Socio("39020382190389", "Bruno", "Rua 1", 123213, true, 1));
 		socios.add(new Socio("37218936271368", "Ana", "Rua 2", 8392167, true, 1));
-		socios.add(new Socio("32131231234324", "Joao", "Rua 3", 8392167, true, 1));
+		socios.add(new Socio("32131231234324", "Joao", "Rua 3", 8392167, true, 2));
 	}
 
 	public PessoaControlador getPessoaControlador() {
@@ -52,13 +52,16 @@ public class SocioControlador {
 		if (buscarSocioPorCpf(cpf) != null) {
 			return "Erro: Sócio com este CPF já existe!";
 		}
-		if (clubeControlador.buscarClubePorId(clubeId) == null) {
-			return "Erro: O clube não existe!";
-		}
 
 		Pessoa pessoa = pessoaControlador.buscarPessoaPorCpf(cpf);
 		if (pessoa == null) {
 			return "Erro: Pessoa ainda não registrada!";
+		}
+		if (clubeControlador.buscarClubePorId(clubeId) == null) {
+			return "Erro: O clube não existe!";
+		}
+		if (clubeControlador.limiteDeCapacidadeAtingido(clubeId) == true) {
+			return "Erro: Foi atingido o limite de capacidade do clube!";
 		}
 
 		String nome = pessoa.getNome();
@@ -161,5 +164,20 @@ public class SocioControlador {
 				sb.append(socio.toString()).append("\n");
 		}
 		return sb.toString();
+	}
+
+	public int contarSociosPorClube(int clubeId) {
+		if (socios.isEmpty()) {
+			return 0;
+		}
+
+		int contador = 0;
+		for (Socio socio : socios) {
+			if (socio.getClubeId() == clubeId) {
+				contador++;
+			}
+		}
+
+		return contador;
 	}
 }
