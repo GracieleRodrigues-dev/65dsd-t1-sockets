@@ -102,11 +102,16 @@ public class ClienteControlador {
 		if (operacao.equals("LIST")) {
 			return "";
 		}
-		if (operacao.equals("INSERT") || operacao.equals("GET") || operacao.equals("DELETE")) {
+		if (operacao.equals("INSERT")){
 			String cpf = form.coletarCPF();
 			String clubeId = form.coletarClubeId();
 			return cpf + ";"  + clubeId;
 		}
+		if (operacao.equals("GET") || operacao.equals("DELETE")) {
+			String cpf = form.coletarCPF();
+			return cpf;
+		}
+
 
 		String cpf = form.coletarCPF();
 		String ativo = form.coletarStatus();

@@ -26,7 +26,7 @@ public class Socio extends Pessoa {
 
 	@Override
 	public String toString() {
-		return super.toString() + ";" + matricula + ";" + ativo;
+		return super.toString() + ";" + matricula + ";" + ativo + ";" + clubeId;
 	}
 
 	public void setMatricula(int matricula) {
