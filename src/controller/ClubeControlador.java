@@ -41,13 +41,14 @@ public class ClubeControlador {
 	}
 
 	public String obterClube(int id) {
+		isClubesEmpty();
 		Clube clube = buscarClubePorId(id);
 		return clube != null ? clube.toString() : "Clube não encontrado";
 	}
 
 	public String removerClube(int id) {
+		isClubesEmpty();
 		Clube clube = buscarClubePorId(id);
-
 		if (clube != null) {
 			clubes.remove(clube);
 
@@ -87,5 +88,12 @@ public class ClubeControlador {
 			return true;
 		}
 		return false;
+	}
+
+	private String isClubesEmpty() {
+		if (clubes.isEmpty()) {
+			return "Sem clubes cadastrados";
+		}
+		return "";
 	}
 }
