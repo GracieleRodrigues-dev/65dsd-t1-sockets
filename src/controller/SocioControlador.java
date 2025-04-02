@@ -103,11 +103,13 @@ public class SocioControlador {
 	}
 
 	public String obterSocio(String cpf) {
+		isSociosEmpty();
 		Socio socio = buscarSocioPorCpf(cpf);
 		return socio != null ? socio.toString() : "Sócio não encontrado";
 	}
 
 	public String removerSocio(String cpf) {
+		isSociosEmpty();
 		Socio socio = buscarSocioPorCpf(cpf);
 		if (socio != null) {
 			socios.remove(socio);
@@ -182,5 +184,12 @@ public class SocioControlador {
 		}
 
 		return contador;
+	}
+
+	public String isSociosEmpty(){
+		if (socios.isEmpty()){
+			return "Sem sócios cadastrados";
+		}
+		return "";
 	}
 }
