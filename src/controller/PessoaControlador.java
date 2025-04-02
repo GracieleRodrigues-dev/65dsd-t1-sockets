@@ -79,11 +79,13 @@ public class PessoaControlador {
 	}
 
 	public String obterPessoa(String cpf) {
+		isPessoasEmpty();
 		Pessoa pessoa = buscarPessoaPorCpf(cpf);
 		return pessoa != null ? pessoa.toString() : "Pessoa não encontrada";
 	}
 
 	public String removerPessoa(String cpf) {
+		isPessoasEmpty();
 		Pessoa pessoa = buscarPessoaPorCpf(cpf);
 		if (pessoa != null) {
 
@@ -126,4 +128,11 @@ public class PessoaControlador {
 
 		return sb.toString().trim();
 	}
+
+	public String isPessoasEmpty() {
+		if (pessoas.isEmpty()) {
+			return "Sem pessoas cadastradas";
+		}
+        return "";
+    }
 }
