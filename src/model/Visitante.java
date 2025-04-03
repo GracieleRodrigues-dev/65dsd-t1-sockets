@@ -15,17 +15,6 @@ public class Visitante extends Pessoa {
 		this.clubeId = clubeId;
 	}
 
-	public int getCodigoAcesso() {
-		return codigoAcesso;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public boolean isAcompanhante() {
-		return acompanhante;
-	}
 
 	@Override
 	public String toString() {

@@ -23,9 +23,6 @@ public class SocioControlador {
 		socios.add(new Socio("32131231234324", "Joao", "Rua 3", 8392167, true, 2));
 	}
 
-	public PessoaControlador getPessoaControlador() {
-		return pessoaControlador;
-	}
 
 	public void setPessoaControlador(PessoaControlador pessoaControlador) {
 		this.pessoaControlador = pessoaControlador;

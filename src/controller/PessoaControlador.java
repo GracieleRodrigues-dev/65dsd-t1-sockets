@@ -17,16 +17,8 @@ public class PessoaControlador {
 		pessoas.add(new Pessoa("77777777", "Maria", "Rua ZZZ"));
 	}
 
-	public SocioControlador getSocioControlador() {
-		return socioControlador;
-	}
-
 	public void setSocioControlador(SocioControlador socioControlador) {
 		this.socioControlador = socioControlador;
-	}
-
-	public VisitanteControlador getVisitanteControlador() {
-		return visitanteControlador;
 	}
 
 	public void setVisitanteControlador(VisitanteControlador visitanteControlador) {

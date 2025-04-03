@@ -19,10 +19,6 @@ public class VisitanteControlador {
 		visitantes.add(new Visitante("382938712893", "Carla", "Rua 3", 3123124, "carla@email.com", true, 1));
 	}
 
-	public PessoaControlador getPessoaControalador() {
-		return pessoaControlador;
-	}
-
 	public void setPessoaControlador(PessoaControlador pessoaControlador) {
 		this.pessoaControlador = pessoaControlador;
 	}

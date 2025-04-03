@@ -17,16 +17,8 @@ public class ClubeControlador {
 		clubes.add(new Clube("Batatas", 3));
 	}
 
-	public SocioControlador getSocioControlador() {
-		return socioControlador;
-	}
-
 	public void setSocioControlador(SocioControlador socioControlador) {
 		this.socioControlador = socioControlador;
-	}
-
-	public VisitanteControlador getVisistanteControlador() {
-		return visitanteControlador;
 	}
 
 	public void setVisistanteControlador(VisitanteControlador visistanteControlador) {

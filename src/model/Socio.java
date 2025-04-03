@@ -12,14 +12,6 @@ public class Socio extends Pessoa {
 		this.clubeId = clubeId;
 	}
 
-	public int getMatricula() {
-		return matricula;
-	}
-
-	public boolean isAtivo() {
-		return ativo;
-	}
-
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
@@ -27,10 +19,6 @@ public class Socio extends Pessoa {
 	@Override
 	public String toString() {
 		return super.toString() + ";" + matricula + ";" + ativo + ";" + clubeId;
-	}
-
-	public void setMatricula(int matricula) {
-		this.matricula = matricula;
 	}
 
 	public int getClubeId() {
