@@ -73,11 +73,13 @@ public class VisitanteControlador {
 	}
 
 	public String obterVisitante(String cpf) {
+		isVisitantesEmpty();
 		Visitante visitante = buscarVisitantePorCpf(cpf);
 		return visitante != null ? visitante.toString() : "Visitante não encontrado";
 	}
 
 	public String removerVisitante(String cpf) {
+		isVisitantesEmpty();
 		Visitante visitante = buscarVisitantePorCpf(cpf);
 		if (visitante != null) {
 			visitantes.remove(visitante);
@@ -96,5 +98,11 @@ public class VisitanteControlador {
 			sb.append(visitante.toString()).append("\n");
 		}
 		return sb.toString();
+	}
+	public String isVisitantesEmpty(){
+		if(visitantes.isEmpty()){
+			return "Sem visitantes cadastrados";
+		}
+		return "";
 	}
 }
