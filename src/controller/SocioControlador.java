@@ -139,6 +139,7 @@ public class SocioControlador {
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("Sócios removidos: ");
+		
 		for (String removido : sociosRemovidos) {
 			sb.append("\n").append("- ").append(removido);
 		}
@@ -150,8 +151,10 @@ public class SocioControlador {
 		if (socios.isEmpty()) {
 			return "0";
 		}
+		
 		StringBuilder sb = new StringBuilder();
-		sb.append(socios.size()).append("\n");
+		sb.append("Nº de sócios: ").append(socios.size()).append("\n");
+		
 		for (Socio socio : socios) {
 			sb.append(socio.toString()).append("\n");
 		}
@@ -162,12 +165,15 @@ public class SocioControlador {
 		if (socios.isEmpty()) {
 			return "0";
 		}
+
 		StringBuilder sb = new StringBuilder();
-		sb.append(socios.size()).append("\n");
+		sb.append("Nº de sócios: ").append(socios.size()).append("\n");
+
 		for (Socio socio : socios) {
 			if (socio.getClubeId() == clubeId)
-				sb.append(socio.toString()).append("\n");
+				sb.append("- ").append(socio.toString()).append("\n");
 		}
+
 		return sb.toString();
 	}
 
@@ -186,8 +192,8 @@ public class SocioControlador {
 		return contador;
 	}
 
-	public String isSociosEmpty(){
-		if (socios.isEmpty()){
+	public String isSociosEmpty() {
+		if (socios.isEmpty()) {
 			return "Sem sócios cadastrados";
 		}
 		return "";

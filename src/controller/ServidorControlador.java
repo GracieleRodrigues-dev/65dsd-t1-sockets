@@ -15,10 +15,14 @@ public class ServidorControlador {
 
 		pessoaControlador.setSocioControlador(socioControlador);
 		pessoaControlador.setVisitanteControlador(visitanteControlador);
+
 		socioControlador.setPessoaControlador(pessoaControlador);
 		socioControlador.setClubeControlador(clubeControlador);
+
 		visitanteControlador.setPessoaControlador(pessoaControlador);
+
 		clubeControlador.setSocioControlador(socioControlador);
+		clubeControlador.setVisistanteControlador(visitanteControlador);
 	}
 
 	public String processarMensagem(String mensagem) {
@@ -43,7 +47,8 @@ public class ServidorControlador {
 			case "INSERT;SOCIO":
 				return socioControlador.inserirSocio(partes[2], Integer.parseInt(partes[3]));
 			case "UPDATE;SOCIO":
-				return socioControlador.atualizarSocio(partes[2], Boolean.parseBoolean(partes[3]), Integer.parseInt(partes[4]));
+				return socioControlador.atualizarSocio(partes[2], Boolean.parseBoolean(partes[3]),
+						Integer.parseInt(partes[4]));
 			case "GET;SOCIO":
 				return socioControlador.obterSocio(partes[2]);
 			case "DELETE;SOCIO":
@@ -53,10 +58,10 @@ public class ServidorControlador {
 
 			case "INSERT;VISITANTE":
 				return visitanteControlador.inserirVisitante(partes[2], Integer.parseInt(partes[3]), partes[4],
-						Boolean.parseBoolean(partes[5]));
+						Boolean.parseBoolean(partes[5]), Integer.parseInt(partes[6]));
 			case "UPDATE;VISITANTE":
 				return visitanteControlador.atualizarVisitante(partes[2], Integer.parseInt(partes[3]), partes[4],
-						Boolean.parseBoolean(partes[5]));
+						Boolean.parseBoolean(partes[5]), Integer.parseInt(partes[6]));
 			case "GET;VISITANTE":
 				return visitanteControlador.obterVisitante(partes[2]);
 			case "DELETE;VISITANTE":

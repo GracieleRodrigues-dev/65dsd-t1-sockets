@@ -54,26 +54,21 @@ public class PessoaControlador {
 	public String atualizarPessoa(String cpf, String nome, String endereco) {
 		Pessoa pessoa = buscarPessoaPorCpf(cpf);
 		if (pessoa != null) {
-
 			pessoa.setNome(nome);
 			pessoa.setEndereco(endereco);
 
-			String message = "";
+			StringBuilder sb = new StringBuilder();
+			sb.append("Pessoa atualizada com sucesso!");
 
-			message += "Pessoa atualizada com sucesso!";
-
-			boolean sincronizacaoSocio = socioControlador.sincronizarPessoa(cpf, nome, endereco);
-			boolean sincronizacaoVisitante = visitanteControlador.sincronizarPessoa(cpf, nome, endereco);
-
-			if (sincronizacaoSocio) {
-				message += "\n- Sincronizado um registro de sócio relacionado a pessoa";
+			if (socioControlador.sincronizarPessoa(cpf, nome, endereco)) {
+				sb.append("\n").append("- Sincronizado um registro de sócio relacionado a pessoa");
 			}
 
-			if (sincronizacaoVisitante) {
-				message += "\n- Sincronizado um registro de visitante relacionado a pessoa";
+			if (visitanteControlador.sincronizarPessoa(cpf, nome, endereco)) {
+				sb.append("\n").append("- Sincronizado um registro de visitante relacionado a pessoa");
 			}
 
-			return message;
+			return sb.toString();
 		}
 		return "Pessoa não encontrada";
 	}
@@ -117,11 +112,13 @@ public class PessoaControlador {
 		}
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(String.format("%02d", pessoas.size())).append("\n");
+		sb.append("Nº de pessoas: ").append(pessoas.size()).append("\n");
+		sb.append("\n\n");
 
 		for (Pessoa pessoa : pessoas) {
 			if (pessoa != null) {
-				sb.append(pessoa.toString()).append("\n");
+				sb.append(pessoa.toString());
+				sb.append("\n");
 				System.out.println("DEBUG: Adicionando -> " + pessoa.toString());
 			}
 		}
@@ -133,6 +130,6 @@ public class PessoaControlador {
 		if (pessoas.isEmpty()) {
 			return "Sem pessoas cadastradas";
 		}
-        return "";
-    }
+		return "";
+	}
 }

@@ -133,8 +133,9 @@ public class ClienteControlador {
 		String email = form.coletarEmail();
 		String acompanhante = form.coletarAcompanhante();
 		String codigoAcesso = form.coletarCodigoDeAcesso();
+		String clubeId = form.coletarClubeId();
 
-		return cpf + ";" + codigoAcesso + ";" + email + ";" + acompanhante;
+		return cpf + ";" + codigoAcesso + ";" + email + ";" + acompanhante + ";" + clubeId;
 	}
 
 	public String coletarDadosClube(String operacao) {

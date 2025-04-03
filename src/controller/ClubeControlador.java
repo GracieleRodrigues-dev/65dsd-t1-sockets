@@ -9,6 +9,7 @@ public class ClubeControlador {
 
 	private List<Clube> clubes;
 	private SocioControlador socioControlador;
+	private VisitanteControlador visitanteControlador;
 
 	public ClubeControlador() {
 		this.clubes = new ArrayList<>();
@@ -22,6 +23,14 @@ public class ClubeControlador {
 
 	public void setSocioControlador(SocioControlador socioControlador) {
 		this.socioControlador = socioControlador;
+	}
+
+	public VisitanteControlador getVisistanteControlador() {
+		return visitanteControlador;
+	}
+
+	public void setVisistanteControlador(VisitanteControlador visistanteControlador) {
+		this.visitanteControlador = visistanteControlador;
 	}
 
 	public String inserirClube(String nome, int capacidade) {
@@ -45,12 +54,19 @@ public class ClubeControlador {
 		Clube clube = buscarClubePorId(id);
 
 		if (clube != null) {
+
 			StringBuilder sb = new StringBuilder();
-			sb.append(clubes.size()).append("\n");
 
-			String socios = socioControlador.listarSociosPorClube(id);
+			sb.append("\n");
+			sb.append("Dados do Clube:");
+			sb.append("\n");
+			sb.append(clube.toString());
+			sb.append("\n\n");
+			sb.append(socioControlador.listarSociosPorClube(id));
+			sb.append("\n");
+			sb.append(visitanteControlador.listarVisitantesPorClube(id));
 
-			return "\n" + clube.toString() + "\n" + socios;
+			return sb.toString();
 		}
 
 		return "Clube não encontrado";
@@ -64,7 +80,8 @@ public class ClubeControlador {
 
 			StringBuilder sb = new StringBuilder();
 			sb.append("Clube removido com sucesso!");
-			sb.append("\n").append(socioControlador.removerSociosPorClube(id));
+			sb.append("\n\n").append(socioControlador.removerSociosPorClube(id));
+			sb.append("\n\n").append(visitanteControlador.removerVisitantesPorClube(id));
 
 			return sb.toString();
 		}
@@ -75,8 +92,10 @@ public class ClubeControlador {
 		if (clubes.isEmpty()) {
 			return "0";
 		}
+
 		StringBuilder sb = new StringBuilder();
-		sb.append(clubes.size()).append("\n");
+		sb.append("Nº de clubes: ").append(clubes.size()).append("\n");
+
 		for (Clube clube : clubes) {
 			sb.append(clube.toString()).append("\n");
 		}
