@@ -43,7 +43,17 @@ public class ClubeControlador {
 	public String obterClube(int id) {
 		isClubesEmpty();
 		Clube clube = buscarClubePorId(id);
-		return clube != null ? clube.toString() : "Clube não encontrado";
+
+		if (clube != null) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(clubes.size()).append("\n");
+
+			String socios = socioControlador.listarSociosPorClube(id);
+
+			return "\n" + clube.toString() + "\n" + socios;
+		}
+
+		return "Clube não encontrado";
 	}
 
 	public String removerClube(int id) {
