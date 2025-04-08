@@ -7,9 +7,10 @@ import controller.ServidorControlador;
 public class Servidor {
 	public static void main(String[] args) {
 		ServidorControlador servidorControlador = new ServidorControlador();
-
-		try (ServerSocket serverSocket = new ServerSocket(8080)) {
-			System.out.println("Servidor iniciado na porta 8080...");
+		int porta = 8080;
+		try (ServerSocket serverSocket = new ServerSocket(porta)) {
+			String ip = InetAddress.getLocalHost().getHostAddress();
+			System.out.println("Servidor iniciado => IP: " + ip + " Porta: " + porta);
 
 			while (true) {
 				try {

@@ -152,8 +152,8 @@ public class ClienteControlador {
 		return nome + ";" + capacidade;
 	}
 
-	public void enviarMensagem() {
-		try (Socket socket = new Socket("localhost", 8080);
+	public void enviarMensagem(String ip, int porta) {
+		try (Socket socket = new Socket(ip, porta);
 				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 			out.println(operacao + ";" + classe + ";" + dados);

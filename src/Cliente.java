@@ -10,6 +10,13 @@ public class Cliente {
 	Formulario formulario = new Formulario();
 
 	public static void main(String[] args) {
+		System.out.print("Digite o IP do servidor: ");
+		String ip = scanner.nextLine();
+
+		System.out.print("Digite a porta do servidor: ");
+		int porta = scanner.nextInt();
+		scanner.nextLine();
+
 		ClienteControlador clienteControlador = new ClienteControlador();
 
 		while (true) {
@@ -19,7 +26,7 @@ public class Cliente {
 			}
 			clienteControlador.selecionarClasse();
 			clienteControlador.coletarDados();
-			clienteControlador.enviarMensagem();
+			clienteControlador.enviarMensagem(ip, porta);
 		}
 		scanner.close();
 	}
